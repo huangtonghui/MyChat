@@ -143,7 +143,6 @@ export default {
       const length = this.items.length;
       const intervalId = setInterval(() => {
         this.items[length - 1] = text.slice(0, index);
-        console.log(text.slice(0, index));
         index++;
         if (index > text.length) {
           clearInterval(intervalId);
