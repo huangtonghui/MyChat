@@ -40,7 +40,6 @@ export default {
       this.expirDay = Math.ceil(
         (Number(localStorage.expir) - new Date().getTime()) / 86400000
       );
-      console.log(this.expirDay);
     }
     this.appheight = window.innerHeight;
     window.addEventListener("resize", () => {
