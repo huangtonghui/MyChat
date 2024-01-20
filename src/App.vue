@@ -57,7 +57,7 @@ export default {
     },
   },
   methods: {
-    getAnswer(content) {
+    getAnswer() {
       // fetch('https://api.openai.com/v1/chat/completions', {
       fetch("https://mychatapi.haibin.xyz", {
         method: "POST",
@@ -79,14 +79,10 @@ export default {
         })
         .then((data) => {
           if (data.choices) {
-            this.items.pop();
             this.output = data.choices[0].message.content;
             if (this.items.length % 2 == 0) {
-              this.items.push(this.output);
-            } else {
-              this.startTyping(this.output, this.items.length);
+              this.startTyping(this.output);
             }
-            this.items;
           }
         })
         .catch((error) => {
@@ -127,7 +123,7 @@ export default {
         this.msgList.push({ role: "user", content: this.input });
         this.getAnswer(this.input);
         this.items.push(this.input);
-        this.$set(this.items, this.items.length, "");
+        this.items.push("");
         this.input = "";
         this.loading = true;
         this.scrollBottom();
@@ -142,10 +138,12 @@ export default {
         this.submit();
       }
     },
-    startTyping(text, length) {
+    startTyping(text) {
       let index = 0;
+      const length = this.items.length;
       const intervalId = setInterval(() => {
-        this.$set(this.items, length, text.slice(0, index));
+        this.items[length - 1] = text.slice(0, index);
+        console.log(text.slice(0, index));
         index++;
         if (index > text.length) {
           clearInterval(intervalId);
