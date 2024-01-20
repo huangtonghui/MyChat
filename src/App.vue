@@ -13,6 +13,7 @@ export default {
       username: "You",
       auth: "",
       msgList: [],
+      expirDay: 7,
     };
   },
   mounted() {
@@ -32,6 +33,14 @@ export default {
     }
     if (localStorage.username) {
       this.username = localStorage.username;
+    }
+    if (!localStorage.expir) {
+      localStorage.expir = new Date().getTime() + this.expirDay * 86400000;
+    } else {
+      this.expirDay = Math.ceil(
+        (Number(localStorage.expir) - new Date().getTime()) / 86400000
+      );
+      console.log(this.expirDay);
     }
     this.appheight = window.innerHeight;
     window.addEventListener("resize", () => {
@@ -99,8 +108,21 @@ export default {
       localStorage.cache = "";
     },
     submit() {
+      const expir = Number(localStorage.expir);
+      const now = new Date().getTime();
+      if (
+        this.username != "admin" &&
+        this.uuid == "202401191240" &&
+        expir < now
+      ) {
+        alert("id已过期,请更新");
+        this.input = "";
+        this.showMenu = true;
+        return;
+      }
+
       if (this.input && !this.loading) {
-        if (this.msgList.length >= 5) {
+        if (this.msgList.length >= 3) {
           this.msgList.shift();
         }
         this.msgList.push({ role: "user", content: this.input });
@@ -134,7 +156,7 @@ export default {
       }, 20);
     },
     nameChange() {
-      const username = window.prompt("请输入你的用户名");
+      const username = window.prompt("更新昵称");
       if (username) {
         this.username = username;
         localStorage.username = this.username;
@@ -142,7 +164,7 @@ export default {
       }
     },
     uuidChange() {
-      const uuid = window.prompt("请输入你的uuid");
+      const uuid = window.prompt("更新uuid");
       if (uuid) {
         this.uuid = uuid;
         localStorage.uuid = this.uuid;
@@ -202,7 +224,9 @@ export default {
     <div class="output">
       <div class="items" v-if="items.length">
         <div class="item" v-for="(item, index) in items" :key="index">
-          <div class="icon purple" v-if="index % 2 == 0">{{ username.slice(0, 1) }}</div>
+          <div class="icon purple" v-if="index % 2 == 0">
+            {{ username.slice(0, 1) }}
+          </div>
           <div class="icon green" v-else>
             <svg
               width="24"
@@ -335,7 +359,6 @@ export default {
             </svg>
           </div>
         </div>
-        <div class="tips">tips: 免费id试用中</div>
         <div class="history"></div>
         <div class="user">
           <span class="avatar purple">{{ username.slice(0, 1) }}</span>
@@ -380,6 +403,9 @@ export default {
               ></path>
             </svg>
           </span>
+          <span class="tips"
+            >(剩余有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span
+          >
         </div>
       </div>
     </transition>
