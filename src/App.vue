@@ -308,7 +308,7 @@ export default {
       :style="{ height: `${height}px` }"
       class="input"
       v-model="input"
-      placeholder="Message"
+      placeholder="本站地址：mychat.haibin.xyz"
       autofocus
       @keydown.enter.prevent="handleEnter"
     ></textarea>
