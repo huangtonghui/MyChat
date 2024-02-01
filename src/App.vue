@@ -13,7 +13,7 @@ export default {
       username: "You",
       auth: "",
       msgList: [],
-      expirDay: 5,
+      expirDay: 3,
       cacheList: [],
       historyIndex: "",
       isNew: false,
