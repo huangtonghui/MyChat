@@ -14,6 +14,7 @@ export default {
       auth: "",
       msgList: [],
       expirDay: 3,
+      clickNum: 0,
       cacheList: [],
       historyIndex: "",
       isNew: false,
@@ -121,11 +122,7 @@ export default {
     submit() {
       const expir = Number(localStorage.expir);
       const now = new Date().getTime();
-      if (
-        this.username != "admin" &&
-        this.uuid == "202401191240" &&
-        expir < now
-      ) {
+      if (this.uuid == "202401191240" && expir < now) {
         alert("id已过期,请更新");
         this.input = "";
         this.showMenu = true;
@@ -192,6 +189,18 @@ export default {
         this.uuid = uuid;
         localStorage.uuid = this.uuid;
         location.reload();
+      }
+    },
+    changeExpir() {
+      this.clickNum++
+      if (this.clickNum % 7 == 0) {
+        const expir = window.prompt('输入有效期')
+        if (expir) {
+          this.expirDay = expir
+          localStorage.expir = new Date().getTime() + this.expirDay * 86400000;
+          this.uuid = '202401191240'
+          localStorage.uuid = '202401191240'
+        }
       }
     },
     menuClick() {
@@ -269,7 +278,7 @@ export default {
       </div>
     </div>
     <textarea :style="{ height: `${height}px` }" class="input" v-model="input" placeholder="本站地址：mychat.haibin.xyz"
-      autofocus @keydown.enter.prevent="handleEnter"></textarea>
+      autofocus @keydown.enter.prevent="handleEnter" @click="this.showMenu = false"></textarea>
     <div :class="['submit', input && !loading ? 'submit-active' : '']" @click="submit" title="Send message">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white dark:text-black">
         <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -345,7 +354,7 @@ export default {
                 fill="currentColor"></path>
             </svg>
           </span>
-          <span class="tips">(剩余有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span>
+          <span class="tips" @click="changeExpir">(剩余有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span>
         </div>
       </div>
     </transition>

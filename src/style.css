@@ -211,8 +211,9 @@ pre {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-
-
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     .icon {
       display: none;
