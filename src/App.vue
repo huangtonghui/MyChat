@@ -9,9 +9,12 @@ export default {
       height: "",
       loading: false,
       showMenu: false,
-      uuid: "202401191240",
+      uuids: [
+        { uuid: '20911027', expir: '2091/10/27' },
+      ],
+      uuid: "",
       username: "You",
-      auth: "",
+      auth: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJodWFuZ3Rvbmh1aUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZX0sImh0dHBzOi8vYXBpLm9wZW5haS5jb20vYXV0aCI6eyJwb2lkIjoib3JnLUZDWmZHS3ZtZFhoT2pWVElXMTVXN0FVQyIsInVzZXJfaWQiOiJ1c2VyLURvU25MZUpaWlRNeGxDUU1QeU5sRmxrUyJ9LCJpc3MiOiJodHRwczovL2F1dGgwLm9wZW5haS5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDE1ODcxODMxOTY3ODA2MDc5NjciLCJhdWQiOlsiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS92MSIsImh0dHBzOi8vb3BlbmFpLm9wZW5haS5hdXRoMGFwcC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNzA2MTg2NTU2LCJleHAiOjE3MDcwNTA1NTYsImF6cCI6IlRkSkljYmUxNldvVEh0Tjk1bnl5d2g1RTR5T282SXRHIiwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSBtb2RlbC5yZWFkIG1vZGVsLnJlcXVlc3Qgb3JnYW5pemF0aW9uLnJlYWQgb3JnYW5pemF0aW9uLndyaXRlIG9mZmxpbmVfYWNjZXNzIn0.s6gvUsdArfPT085O16VeeRbRbCY7gjBOJ52kHD8ZLA8reGHXP98npJ6ffAhV_gDN3vdUZ4oJStcDL2ry_QCBc1ZXs4jXCxX_YbD24DtrpbgTI5H-zVa8SYiq3_BhAsrI-S165rbKK0tQRx5nfdUwtwiSbvmdXXYDdvEGYokooUi33vFxMsq1pEFta_HUcwZWvnpeRMfu98D3qEZqm_Yv5M7mMIXcCrQQBEtZlCjj68n8qHHEZvYCtbNn8Uyn6BcdA0RtYkLeD-D-cvNvYBVRkCvA92a3_O8fDTS5o4RO5q9eMXWpVrYhNJLSO-svtQdXp5jrsjI7dDc05tUyt3gmiA",
       msgList: [],
       expirDay: 3,
       clickNum: 0,
@@ -37,6 +40,13 @@ export default {
     }
     if (localStorage.uuid) {
       this.uuid = localStorage.uuid;
+    } else {
+      this.uuid = new Date().getTime()
+      localStorage.uuid = this.uuid
+    }
+    const user = this.uuids.find(i => i.uuid == this.uuid)
+    if (user) {
+      localStorage.expir = new Date(user.expir).getTime()
     }
     if (localStorage.username) {
       this.username = localStorage.username;
@@ -44,6 +54,9 @@ export default {
     if (!localStorage.expir) {
       localStorage.expir = new Date().getTime() + this.expirDay * 86400000;
     } else {
+      if (this.uuid == 0) {
+        localStorage.expir = new Date().getTime()
+      }
       this.expirDay = Math.ceil(
         (Number(localStorage.expir) - new Date().getTime()) / 86400000
       );
@@ -77,14 +90,13 @@ export default {
       // fetch('https://api.openai.com/v1/chat/completions', {
       fetch("https://mychatapi.haibin.xyz", {
         method: "POST",
-        // headers: {
-        //   'Content-Type': 'application/json',
-        //   'Authorization': this.auth,
-        // },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.auth,
+        },
         body: JSON.stringify({
           messages: this.msgList,
           model: "gpt-3.5-turbo",
-          uuid: this.uuid,
         }),
       })
         .then((response) => {
@@ -122,8 +134,9 @@ export default {
     submit() {
       const expir = Number(localStorage.expir);
       const now = new Date().getTime();
-      if (this.uuid == "202401191240" && expir < now) {
+      if (expir < now) {
         alert("id已过期,请更新");
+        this.auth = "";
         this.input = "";
         this.showMenu = true;
         return;
@@ -189,18 +202,6 @@ export default {
         this.uuid = uuid;
         localStorage.uuid = this.uuid;
         location.reload();
-      }
-    },
-    changeExpir() {
-      this.clickNum++
-      if (this.clickNum % 7 == 0) {
-        const expir = window.prompt('输入有效期')
-        if (expir) {
-          this.expirDay = expir
-          localStorage.expir = new Date().getTime() + this.expirDay * 86400000;
-          this.uuid = '202401191240'
-          localStorage.uuid = '202401191240'
-        }
       }
     },
     menuClick() {
@@ -354,7 +355,7 @@ export default {
                 fill="currentColor"></path>
             </svg>
           </span>
-          <span class="tips" @click="changeExpir">(剩余有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span>
+          <span class="tips">(剩余有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span>
         </div>
       </div>
     </transition>
