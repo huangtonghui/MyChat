@@ -14,7 +14,7 @@ export default {
       ],
       uuid: "",
       username: "You",
-      auth: 'sess-P4SJji5nVdDYpAyFctuNnoY6t2eGgU09R8P1Nc8U',
+      auth: 'sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
       msgList: [],
       expirDay: 3,
       clickNum: 0,
