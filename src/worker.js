@@ -1,3 +1,4 @@
+// @ts-nocheck
 addEventListener('fetch', (event) => {
   event.respondWith(handleRequest(event.request));
 });
@@ -5,11 +6,13 @@ addEventListener('fetch', (event) => {
 async function handleRequest(request) {
   // 构建 GPT API 的 URL
   const gptApiUrl = 'https://api.openai.com/v1/chat/completions';
-
   // 转发本地请求到 GPT API
   const gptApiResponse = await fetch(gptApiUrl, {
     method: request.method,
-    headers: request.headers,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
+    },
     body: request.body, // 传递本地请求的 body 数据
   });
 
