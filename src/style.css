@@ -265,6 +265,13 @@ pre {
   }
 }
 
+.help {
+  height: 40px;
+  font-size: 12px;
+  text-indent: 50px;
+  color: skyblue;
+}
+
 .menu .user .fade-enter,
 .fade-leave-to {
   opacity: 0;

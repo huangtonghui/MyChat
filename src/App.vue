@@ -14,7 +14,7 @@ export default {
       ],
       uuid: "",
       username: "You",
-      auth: 'sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
+      // auth: 'sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
       msgList: [],
       expirDay: 3,
       clickNum: 0,
@@ -90,10 +90,10 @@ export default {
       // fetch('https://api.openai.com/v1/chat/completions', {
       fetch("https://mychatapi.haibin.xyz", {
         method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.auth,
-        },
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   'Authorization': 'Bearer ' + this.auth,
+        // },
         body: JSON.stringify({
           messages: this.msgList,
           model: "gpt-3.5-turbo",
@@ -355,8 +355,9 @@ export default {
                 fill="currentColor"></path>
             </svg>
           </span>
-          <span class="tips">(剩余有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span>
+          <span class="tips">(有效期:{{ expirDay > 0 ? expirDay : 0 }}天)</span>
         </div>
+        <div class="help">技术支持：微信_haibin_</div>
       </div>
     </transition>
   </div>
