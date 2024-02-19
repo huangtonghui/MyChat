@@ -279,7 +279,7 @@ export default {
       </div>
     </div>
     <textarea :style="{ height: `${height}px` }" class="input" v-model="input" placeholder="本站地址：mychat.haibin.xyz"
-      autofocus @keydown.enter.prevent="handleEnter" @click="this.showMenu = false"></textarea>
+      autofocus @keypress.enter.prevent="handleEnter" @click="this.showMenu = false"></textarea>
     <div :class="['submit', input && !loading ? 'submit-active' : '']" @click="submit" title="Send message">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white dark:text-black">
         <path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
