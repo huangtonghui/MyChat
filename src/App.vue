@@ -167,6 +167,7 @@ export default {
         this.loading = true;
         this.scrollBottom();
         localStorage.limit = Number(localStorage.limit) - 1
+        _hmt.push(['_trackEvent', 'button', 'click', 'submit']);
       }
     },
     handleEnter(event) {
