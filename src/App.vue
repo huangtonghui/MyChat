@@ -16,7 +16,7 @@ export default {
       username: "You",
       // auth: 'sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
       msgList: [],
-      expirDay: 3,
+      expirDay: 1,
       clickNum: 0,
       cacheList: [],
       historyIndex: "",
@@ -34,6 +34,15 @@ export default {
           this.scrollBottom();
         }, 100);
       });
+    }
+    if (!localStorage.hour) {
+      localStorage.hours = new Date().getHours()
+      localStorage.limit = 20
+    } else {
+      const hours = new Date().getDate()
+      if (localStorage.hours != hours) {
+        localStorage.limit = 20
+      }
     }
     if (localStorage.cacheList) {
       this.cacheList = JSON.parse(localStorage.cacheList);
@@ -134,8 +143,12 @@ export default {
     submit() {
       const expir = Number(localStorage.expir);
       const now = new Date().getTime();
+      if (localStorage.limit <= 0) {
+        alert("每小时请求频率过高，下个小时重试");
+        return;
+      }
       if (expir < now) {
-        alert("id已过期,请更新");
+        alert("id已过期,请联系管理员更新有效id");
         this.auth = "";
         this.input = "";
         this.showMenu = true;
@@ -153,6 +166,7 @@ export default {
         this.input = "";
         this.loading = true;
         this.scrollBottom();
+        localStorage.limit = Number(localStorage.limit) - 1
       }
     },
     handleEnter(event) {
