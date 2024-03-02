@@ -37,11 +37,11 @@ export default {
     }
     if (!localStorage.hour) {
       localStorage.hours = new Date().getHours()
-      localStorage.limit = 20
+      localStorage.limit = 10
     } else {
       const hours = new Date().getDate()
       if (localStorage.hours != hours) {
-        localStorage.limit = 20
+        localStorage.limit = 10
       }
     }
     if (localStorage.cacheList) {
@@ -56,6 +56,8 @@ export default {
     const user = this.uuids.find(i => i.uuid == this.uuid)
     if (user) {
       localStorage.expir = new Date(user.expir).getTime()
+    } else {
+      localStorage.limit = 2
     }
     if (localStorage.username) {
       this.username = localStorage.username;
@@ -144,7 +146,7 @@ export default {
       const expir = Number(localStorage.expir);
       const now = new Date().getTime();
       if (localStorage.limit <= 0) {
-        alert("每小时请求频率过高，下个小时重试");
+        alert("请求频率过高，会员通道优先");
         return;
       }
       if (expir < now) {
