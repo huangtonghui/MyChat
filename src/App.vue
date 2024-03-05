@@ -146,11 +146,11 @@ export default {
       const expir = Number(localStorage.expir);
       const now = new Date().getTime();
       if (localStorage.limit <= 0) {
-        alert("请求频率过高，会员通道优先");
+        alert("服务拥挤，会员id优先");
         return;
       }
       if (expir < now) {
-        alert("id已过期,请联系管理员更新有效id");
+        alert("id过期，请联系管理员");
         this.auth = "";
         this.input = "";
         this.showMenu = true;
