@@ -16,7 +16,7 @@ export default {
       username: "You",
       // auth: 'sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
       msgList: [],
-      expirDay: 1,
+      expirDay: 0,
       clickNum: 0,
       cacheList: [],
       historyIndex: "",
