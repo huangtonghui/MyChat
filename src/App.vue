@@ -147,6 +147,9 @@ export default {
       const now = new Date().getTime();
       if (localStorage.limit <= 0) {
         alert("服务拥挤，会员id优先");
+        this.auth = "";
+        this.input = "";
+        this.showMenu = true;
         return;
       }
       if (expir < now) {
