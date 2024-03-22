@@ -38,11 +38,11 @@ export default {
     }
     if (!localStorage.hour) {
       localStorage.hours = new Date().getHours()
-      localStorage.limit = 10
+      localStorage.limit = 20
     } else {
       const hours = new Date().getDate()
       if (localStorage.hours != hours) {
-        localStorage.limit = 10
+        localStorage.limit = 20
       }
     }
     if (localStorage.cacheList) {
