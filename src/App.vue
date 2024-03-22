@@ -11,7 +11,7 @@ export default {
       showMenu: false,
       uuids: [
         { uuid: '20911027', expir: '2091/10/27' },
-        { uuid: '13814972315', expir: '2024/04/22' },
+        { uuid: '13814972315', expir: '2024/04/21' },
       ],
       uuid: "",
       username: "You",
