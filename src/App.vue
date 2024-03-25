@@ -12,10 +12,11 @@ export default {
       uuids: [
         { uuid: '20911027', expir: '2091/10/27' },
         { uuid: '13814972315', expir: '2024/04/21' },
+        { uuid: '633150900', expir: '2024/04/24' },
       ],
       uuid: "",
       username: "You",
-      // auth: 'sess-Vye45UwA1UKHDwpksE76wtGhneBK9Gn6bHccCt9s',
+      auth: '',
       msgList: [],
       expirDay: 1,
       clickNum: 0,
