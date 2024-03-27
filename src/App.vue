@@ -59,7 +59,7 @@ export default {
     if (user) {
       localStorage.expir = new Date(user.expir).getTime()
     } else {
-      localStorage.limit = 1
+      localStorage.limit = 2
     }
     if (localStorage.username) {
       this.username = localStorage.username;
